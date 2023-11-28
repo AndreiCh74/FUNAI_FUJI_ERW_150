@@ -1,5 +1,5 @@
 # erw-150
-FUNAI FUJI ERW-150 Agcen xf150 esphome<br>
+FUNAI FUJI ERW 150 Agcen xf150 esphome<br>
 Так как мне надоело, что данное устройство после выключения пропадало из wi-fi сети то решил его отвязать от облака Tuya и перенести в Esphome.<br>
 Дополнительно получаем отличную работу в Home Assistant.<br>
 У меня модель FUNAI FUJI ERW-150 в интернете я нашёл его толи клон толи родителя под маркой Agcen xf150.<br>
