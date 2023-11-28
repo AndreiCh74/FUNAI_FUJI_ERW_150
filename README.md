@@ -17,3 +17,5 @@ Datapoint 102: enum (value: 1) #Регулировка клапана
 Datapoint 103: switch (value: OFF) #Сброс таймера фильтра
 Datapoint 104: int value (value: 1) #Положение клапана
 Datapoint 7: int value (value: 15) #TVOC
+Модуль оригинала я простов снял и собрал всё на esp8266. Просто потому, что у меня он был, а перепаивать чип в оригинале я не хотел.
+Собран он на WBR3
