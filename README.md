@@ -10,7 +10,7 @@ FUNAI FUJI ERW-150 Agcen xf150 esphome
 Все эти модели умеют управляться как через ИК пульт так и с помощью приложения SmartLife (и его клоны).
 <br>
 Так как я уже успользовал данное устройство в LocalTuya то уже знал какие DP за что отвечали.
-<br>
+<br><br>
 Datapoint 1: switch (value: OFF) #Включение/Выключение
 Datapoint 2: enum (value: 0) #Режим работы
 Datapoint 4: switch (value: OFF) #Подсветка
