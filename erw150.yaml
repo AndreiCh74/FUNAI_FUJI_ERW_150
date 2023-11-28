@@ -1,0 +1,175 @@
+substitutions:
+  device_name: "erw150"
+  friendly_name: "erw150"
+esphome:
+  name: "${device_name}"
+  friendly_name: "${friendly_name}"
+esp8266:
+  board: nodemcuv2
+
+#Здесь рассшифровка показания TVOC
+text_sensor:
+  - platform: template
+    name: "TVOC Classification"
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      if ( int(id(${device_name}_tvoc).state) <= 65) {
+        return {"Здесь классно"};
+      }
+      else if (int(id(${device_name}_tvoc).state) >= 65 && int(id(${device_name}_tvoc).state) <= 220) {
+        return {"Рекомендуется проветрить"};
+      }
+      else if (int(id(${device_name}_tvoc).state) >= 220 && int(id(${device_name}_tvoc).state) <= 660) {
+        return {"Рекомендуется усиленное проветривание"};
+      }
+      else if (int(id(${device_name}_tvoc).state) >= 660 && int(id(${device_name}_tvoc).state) <= 2200) {
+        return {"Необходима усиленное проветривание"};
+      }
+      else if (int(id(${device_name}_tvoc).state) >= 2200 && int(id(${device_name}_tvoc).state) <= 3000) {
+        return {"Находится здесь не стоит долго"};
+      }
+      else if (int(id(${device_name}_tvoc).state) >= 3000 && int(id(${device_name}_tvoc).state) <= 4000) {
+        return {"Здесь не для живых"};
+      }
+      else if (int(id(${device_name}_tvoc).state) >= 4000) {
+        return {"Ты здесь что забыл?"};
+      }
+      else {
+        return {"error"};
+      }
+
+# Enable logging
+logger:
+#  level: ERROR
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: ""
+  reboot_timeout: 1min
+ota:
+  password: ""
+web_server:
+  port: 80
+  auth:
+    username: !secret web_server_user
+    password: !secret web_server_password 
+wifi:
+  networks:
+  - ssid: !secret wifi_ssid
+    password: !secret wifi_password
+  
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${friendly_name} Hotspot"
+    password: !secret ap_password
+
+captive_portal:
+
+uart:
+  rx_pin: D1
+  tx_pin: D2
+  baud_rate: 9600
+
+# Register the Tuya MCU connection
+tuya:
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime"
+  - platform: wifi_signal
+    name: "${friendly_name} WiFi Signal"
+    id: wifi_signal_db
+    update_interval: 60s
+    entity_category: "diagnostic"
+  - platform: copy # Reports the WiFi signal strength in %
+    source_id: wifi_signal_db
+    name: "WiFi Signal Percent"
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "Signal %"
+    entity_category: "diagnostic"
+  - platform: "tuya"
+    name: "TVOC"
+    id: "${device_name}_tvoc"
+    sensor_datapoint: 7
+    device_class: "volatile_organic_compounds"
+    state_class: "measurement"
+    accuracy_decimals: 0
+  - platform: "tuya"
+    name: "Outside Temperature"
+    id: "${device_name}_temp"
+    sensor_datapoint: 9
+    unit_of_measurement: "°C"
+  - platform: "tuya"
+    name: "Air Quality"
+    sensor_datapoint: 23
+    icon: mdi:air-filter
+  - platform: "tuya"
+    name: "noname"
+    sensor_datapoint: 18    
+switch:
+  - platform: "tuya"
+    name: "Power"
+    switch_datapoint: 1
+    id: "${device_name}_power_switch"
+#если хочется чтобы при выключении, выключался и экран то можете раскомментировать строки внизу
+#    on_turn_off:
+#           then:
+#            - switch.turn_off: "${device_name}_light_switch"
+  - platform: "tuya"
+    name: "Light"
+    switch_datapoint: 4
+    inverted: true
+    id: "${device_name}_light_switch"
+    icon: mdi:television-ambient-light
+  - platform: "tuya"
+    name: "Ionizer"
+    switch_datapoint: 5
+    icon: mdi:chart-bubble
+  - platform: "tuya"
+    name: "Filter Reset"
+    id: "${device_name}_filter_reset"
+    switch_datapoint: 103
+    icon: mdi:calendar-filter
+  - platform: "tuya"
+    name: "13"
+    switch_datapoint: 13    
+
+select:
+  - platform: "tuya"
+    name: "Mode"
+    id: "${device_name}_mode"
+    enum_datapoint: 2
+    optimistic: true
+    options:
+      0: auto
+      1: sleep
+      2: manual
+  - platform: "tuya"
+    name: "Klapan"
+    id: "${device_name}_klapan"
+    enum_datapoint: 102
+    optimistic: true
+    options:
+      0: Auto_1
+      1: Auto_2
+      2: Manual
+number:
+  - platform: tuya
+    name: "Polojenie Zaslonki"
+    id: "${device_name}_zaslonka"
+    number_datapoint: 104
+    min_value: 1
+    max_value: 5
+    step: 1
+  - platform: tuya
+    name: "Speed"
+    id: "${device_name}_speed"
+    number_datapoint: 101
+    min_value: 1
+    max_value: 9
+    step: 1
