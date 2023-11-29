@@ -47,7 +47,7 @@ logger:
 api:
   encryption:
     key: ""
-  reboot_timeout: 1min
+#  reboot_timeout: 1min
 ota:
   password: ""
 web_server:
