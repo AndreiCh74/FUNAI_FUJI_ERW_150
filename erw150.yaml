@@ -146,18 +146,18 @@ select:
     enum_datapoint: 2
     optimistic: true
     options:
-      0: auto
-      1: sleep
-      2: manual
+      0: "Авто"
+      1: "Сон"
+      2: "Ручной"
   - platform: "tuya"
     name: "Klapan"
     id: "${device_name}_klapan"
     enum_datapoint: 102
     optimistic: true
     options:
-      0: Auto_1
-      1: Auto_2
-      2: Manual
+      0: "Comfort"
+      1: "ECO"
+      2: "Ручной"
 number:
   - platform: tuya
     name: "Polojenie Zaslonki"
