@@ -100,7 +100,7 @@ sensor:
     state_class: "measurement"
     accuracy_decimals: 0
   - platform: "tuya"
-    name: "Outside Temperature"
+    name: "Наружная температура"
     id: "${device_name}_temp"
     sensor_datapoint: 9
     unit_of_measurement: "°C"
@@ -113,7 +113,7 @@ sensor:
     sensor_datapoint: 18    
 switch:
   - platform: "tuya"
-    name: "Power"
+    name: "Вкл/выкл"
     switch_datapoint: 1
     id: "${device_name}_power_switch"
 #если хочется чтобы при выключении, выключался и экран то можете раскомментировать строки внизу
@@ -121,17 +121,17 @@ switch:
 #           then:
 #            - switch.turn_off: "${device_name}_light_switch"
   - platform: "tuya"
-    name: "Light"
+    name: "Вкл/выкл дисплея"
     switch_datapoint: 4
     inverted: true
     id: "${device_name}_light_switch"
     icon: mdi:television-ambient-light
   - platform: "tuya"
-    name: "Ionizer"
+    name: "Ионизатор"
     switch_datapoint: 5
     icon: mdi:chart-bubble
   - platform: "tuya"
-    name: "Filter Reset"
+    name: "Сброс фильтра"
     id: "${device_name}_filter_reset"
     switch_datapoint: 103
     icon: mdi:calendar-filter
@@ -141,7 +141,7 @@ switch:
 
 select:
   - platform: "tuya"
-    name: "Mode"
+    name: "Режим работы"
     id: "${device_name}_mode"
     enum_datapoint: 2
     optimistic: true
@@ -150,7 +150,7 @@ select:
       1: "Сон"
       2: "Ручной"
   - platform: "tuya"
-    name: "Klapan"
+    name: "Клапан"
     id: "${device_name}_klapan"
     enum_datapoint: 102
     optimistic: true
@@ -160,14 +160,14 @@ select:
       2: "Ручной"
 number:
   - platform: tuya
-    name: "Polojenie Zaslonki"
+    name: "Положение заслонки"
     id: "${device_name}_zaslonka"
     number_datapoint: 104
     min_value: 1
     max_value: 5
     step: 1
   - platform: tuya
-    name: "Speed"
+    name: "Скорость"
     id: "${device_name}_speed"
     number_datapoint: 101
     min_value: 1
